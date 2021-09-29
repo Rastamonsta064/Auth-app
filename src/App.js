@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from "./components/Header";
 import {Route, Switch} from "react-router-dom";
 import React, {useEffect} from "react";
