@@ -33,12 +33,12 @@ function App() {
             <Route exact path="/" component={Home}/>
             <Route exact path="/login" component={LoginPage}/>
             <Route exact path="/registration" component={Registration}/>
-            <Route exact path="/admin" component={AdminPanel}/>
+            <Route exact path="/admin" render={user ? AdminPanel : Home}/>
             <Route exact path="/protected" render={user ? ProtectedPage : Home}/>
             <Route exact path="/free" component={FreePage}/>
             <Route path="/test" component={Test}/>
             <Route path="/logout" component={LogOutPage}/>
-            <Route path="/account" component={Account}/>
+            <Route path="/account" render={user ? Account : Home}/>
             <Route path="*" component={()=> <h2 className="text-center">404 NOT FOUND</h2>}/>
         </Switch>
         <p className="m-1 text-center"> Auth-app site. Made by Mikhail Lapshin. ©All rights reserved 2021</p>
