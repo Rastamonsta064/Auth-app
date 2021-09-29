@@ -2,7 +2,7 @@ export const SET_USER = "SET_USER";
 export const SET_TOKEN = "SET_TOKEN";
 export const LOGOUT = "LOGOUT";
 export const SET_ERROR = "SET_ERROR";
-export const url = process.env.URL;
+export const url = "https://auth-app-server.herokuapp.com";
 
 
 export const setUser = (user) => ({
