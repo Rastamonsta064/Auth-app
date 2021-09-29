@@ -2,7 +2,7 @@
   "name": "auth-app",
   "version": "0.0.1",
   "private": true,
-  "homepage": "http://Rastamonsta064.github.io/Auth-app",
+  "homepage": "http://Rastamonsta064.github.io/Auth-app/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
