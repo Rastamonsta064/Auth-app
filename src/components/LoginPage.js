@@ -18,15 +18,20 @@ const LoginPage = () => {
     const history = useHistory();
 
     const isError = useSelector(state => state.isError);
+    const user = useSelector(state => state.user);
+
 
     const loginPressHandler = async () => {
+        setMessage("Loading...")
         if (email && password) {
             const token = jwt.sign({email, password}, secretKey);
-            await dispatch(getUser(token));
+            dispatch(await getUser(token));
+            setEmail("");
+            setPassword("");
             console.log("login");
 
-            if (isError) {
-                setMessage("Error");
+            if (isError && !user) {
+                setMessage("Wrong login/password.");
             } else {
                 history.push("/");
             }
@@ -65,6 +70,7 @@ const LoginPage = () => {
             </div>
         </div>
     );
-};
+}
+;
 
 export default LoginPage;

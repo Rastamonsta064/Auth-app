@@ -1,6 +1,6 @@
+import React, {useEffect} from "react";
 import Header from "./components/Header";
 import {Route, Switch} from "react-router-dom";
-import React, {useEffect} from "react";
 import Home from "./components/Home";
 import LoginPage from "./components/LoginPage";
 import FreePage from "./components/FreePage";
@@ -18,32 +18,32 @@ function App() {
     const dispatch = useDispatch();
     useEffect(() => {
         const token = localStorage.getItem('token');
-        if(token){
+        if (token) {
             dispatch(getUser(token));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
+    }, []);
 
     const user = useSelector(state => state.user);
 
-  return (
-    <div className="App">
-        <Header user={user}/>
-        <Switch>
-            <Route exact path="/" component={Home}/>
-            <Route exact path="/login" component={LoginPage}/>
-            <Route exact path="/registration" component={Registration}/>
-            <Route exact path="/admin" render={user ? AdminPanel : Home}/>
-            <Route exact path="/protected" render={user ? ProtectedPage : Home}/>
-            <Route exact path="/free" component={FreePage}/>
-            <Route path="/test" component={Test}/>
-            <Route path="/logout" component={LogOutPage}/>
-            <Route path="/account" render={user ? Account : Home}/>
-            <Route path="*" component={()=> <h2 className="text-center">404 NOT FOUND</h2>}/>
-        </Switch>
-        <p className="m-1 text-center"> Auth-app site. Made by Mikhail Lapshin. ©All rights reserved 2021</p>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Header user={user}/>
+            <Switch>
+                <Route exact path="/" component={Home}/>
+                <Route exact path="/login" component={user ? Home : LoginPage}/>
+                <Route exact path="/registration" component={Registration}/>
+                <Route exact path="/admin" component={AdminPanel}/>
+                <Route exact path="/protected" component={user ? ProtectedPage : Home}/>
+                <Route exact path="/free" component={FreePage}/>
+                <Route exact path="/test" compomemt={Test}/>
+                <Route exact path="/logout" component={LogOutPage}/>
+                <Route exact path="/account" component={Account}/>
+                <Route path="*" component={() => <h2 className="text-center">404 NOT FOUND</h2>}/>
+            </Switch>
+            <p className="m-1 text-center"> Auth-app site. Made by Mikhail Lapshin. ©All rights reserved 2021</p>
+        </div>
+    );
 }
 
 export default App;

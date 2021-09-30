@@ -40,12 +40,12 @@ export const getUser = (token) => {
                 if (response.ok) {
                     return response.json();
                 } else {
-                    dispatch(setError(true));
                     throw new Error(response.status.toString());
                 }
             })
             .then(user => {
                 if (user) {
+                    dispatch(setError(false));
                     dispatch(setUser(user));
                     dispatch(setToken(user.secret));
                 } else {
@@ -143,6 +143,7 @@ export const deleteUser = (id, token) => {
         })
             .then(response => {
                 if (response.ok) {
+                    dispatch(setError(true));
                     dispatch(logOut());
                     console.log(`User with id: ${id} deleted`);
                 } else {

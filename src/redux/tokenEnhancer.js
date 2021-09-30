@@ -1,4 +1,4 @@
-import {LOGOUT, SET_TOKEN} from "./actions";
+import {LOGOUT, SET_TOKEN, setError} from "./actions";
 
 export const tokenEnhancer = ({dispatch, getState}) => (next) => (action) => {
     switch (action.type) {
