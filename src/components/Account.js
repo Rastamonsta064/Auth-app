@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import Message from "./Message";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteUser, updateUser} from "../redux/actions";
+import {changePass, deleteUser, updateUser} from "../redux/actions";
 import {useHistory} from "react-router-dom";
+import jwt from "jsonwebtoken";
+import {secretKey} from "./Registration";
 
 const Account = () => {
 
@@ -14,7 +16,13 @@ const Account = () => {
         phone: ""
     });
 
-     const you = useSelector(state => state.user);
+    const [changingPass, setChangingPass] = useState(false);
+    const [oldP, setOldP] = useState("");
+    const [newP, setNewP] = useState("");
+    const [newP2, setNewP2] = useState("");
+
+
+    const you = useSelector(state => state.user);
 
     useEffect(() => {
         if (you) {
@@ -39,17 +47,26 @@ const Account = () => {
     }
 
     const saveClickHandler = () => {
-        if(your.first && your.last && your.phone ){
+        if (your.first && your.last && your.phone) {
             setEdit(true);
-            dispatch(updateUser(your,you.secret));
+            dispatch(updateUser(your, you.secret));
 
 
         }
     }
     const deleteClickHandler = () => {
-        if(window.confirm("Are you sure? Delete Your account and all your data?")){
-                dispatch(deleteUser(you._id,you.secret));
-                history.push("/");
+        if (window.confirm("Are you sure? Delete Your account and all your data?")) {
+            dispatch(deleteUser(you._id, you.secret));
+            history.push("/");
+        }
+    }
+
+    const changePasswordHandler = () => {
+        if (oldP && newP && oldP !== newP && newP === newP2) {
+            if (window.confirm("Are you sure to change Password?")) {
+                const newSecret = jwt.sign({email: you.email, password: newP}, secretKey);
+                dispatch(changePass(newSecret));
+            }
         }
     }
 
@@ -104,9 +121,56 @@ const Account = () => {
                     <button className="btn btn-danger m-1" onClick={deleteClickHandler}>Delete Account
                     </button>
                 </div>
+                <div className="col-auto">
+                    <button className={`btn btn-danger m-1 ${changingPass ? "disabled" : ""}`}
+                            onClick={() => setChangingPass(!changingPass)}>
+                        Change Password
+                    </button>
+                </div>
             </div>
+            {changingPass ?
+                <div className="row g-3 m-3 justify-content-center">
+                    <div className="col-auto m-3">
+                        <input
+                            type="password"
+                            className="form-control"
+                            placeholder="Old Password"
+                            value={oldP}
+                            onChange={(e) => setOldP(e.target.value)}
+                        />
+                    </div>
+                    <div className="col-auto m-3">
+                        <input
+                            type="password"
+                            className="form-control"
+                            placeholder="New Password"
+                            value={newP}
+                            onChange={(e) => setNewP(e.target.value)}
+                        />
+                    </div>
+                    <div className="col-auto m-3">
+                        <input
+                            type="password"
+                            className="form-control"
+                            placeholder="New Password"
+                            value={newP2}
+                            onChange={(e) => setNewP2(e.target.value)}
+                        />
+                    </div>
+                    <div className="row justify-content-center">
+                        <div className="col-auto">
+                            <button className="btn btn-danger m-1" onClick={changePasswordHandler}>Update Password
+                            </button>
+                        </div>
+                        <div className="col-auto">
+                            <button className="btn btn-primary m-1" onClick={() => setChangingPass(false)}>Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                : <></>}
         </div>
     );
-};
+}
 
 export default Account;

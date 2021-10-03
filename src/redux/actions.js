@@ -83,26 +83,25 @@ export const registerUser = (newUser) => {
     }
 }
 
-function createToken(login, oldPass) {
-    return "";
-}
-
-export const changePass = (oldPass, newPass) => {
+export const changePass = (newSecret) => {
     return (dispatch, getState) => {
-        fetch(url + "/account/user/password", {
+        fetch(url + "/account/password", {
             method: "PUT",
             headers: {
-                Authorization: createToken(getState().user.login, oldPass), //токен созданый старым паролем, который ввели и и логином из стейта
-                'New-Password': newPass
+                Authorization: getState().user.secret,
+                'secret': newSecret
             }
         })
             .then(response => {
                 if (response.ok) {
-                    const newToken = "";
-                    dispatch(setToken(newToken));
+                    return response.json()
                 } else {
                     throw new Error(response.status.toString());
                 }
+            })
+            .then(user => {
+                dispatch(setUser(user));
+                dispatch(setToken(user.secret));
             })
     }
 }
